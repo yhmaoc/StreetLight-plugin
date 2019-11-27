@@ -3,12 +3,7 @@ package com.isoftstone.codec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.isoftstone.type.DeviceType;
-import com.isoftstone.type.Manufacture;
-import org.msgpack.core.MessagePack;
-import org.msgpack.core.MessageUnpacker;
 
-import java.io.IOException;
 import java.util.EnumMap;
 
 public abstract class AbsMachineToCloud {
@@ -65,7 +60,7 @@ public abstract class AbsMachineToCloud {
      * @return
      */
     public final String chop() {
-        System.out.println("------chop()-------");
+        System.out.println("------分离头部-------");
         switch (binaryData[2]) {
             case 0x00:
                 msgType = "deviceReq";
@@ -83,7 +78,7 @@ public abstract class AbsMachineToCloud {
     }
 
     public void hook() {
-        System.out.println("------hook()-------");
+        System.out.println("------钩子函数-------");
     }
 
     public abstract boolean check();

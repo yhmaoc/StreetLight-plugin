@@ -24,16 +24,16 @@ public abstract class LampCtl {
     ReportBehavior reportBehavior;
     AckBehavior ackBehavior;
 
-    public void on() {
-        controlBehavior.on();
+    public byte[] on() {
+        return controlBehavior.on();
     }
 
-    public void off() {
-        controlBehavior.off();
+    public byte[] off() {
+        return controlBehavior.off();
     }
 
-    public void dim(int value) {
-        controlBehavior.dim(value);
+    public byte[] dim(int value) {
+        return controlBehavior.dim(value);
     }
 
     public void getStatus() {

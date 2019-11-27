@@ -1,4 +1,4 @@
-package com.isoftstone.type;
+package com.isoftstone.codec;
 
 public enum DeviceType {
         LAMPCTL,

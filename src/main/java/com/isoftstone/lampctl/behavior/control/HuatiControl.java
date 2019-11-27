@@ -1,5 +1,7 @@
 package com.isoftstone.lampctl.behavior.control;
 
+import com.isoftstone.utility.Utilty;
+
 /**
  * ClassName: HuatiOnBehavior
  * Package: com.isoftstone.lampctl.on
@@ -10,17 +12,20 @@ package com.isoftstone.lampctl.behavior.control;
  */
 public class HuatiControl implements ControlBehavior {
     @Override
-    public void on() {
+    public byte[] on() {
         System.out.println("---Huati on---");
+        return Utilty.getByteArray("0000");
     }
 
     @Override
-    public void off() {
+    public byte[] off() {
         System.out.println("---Huati off---");
+        return Utilty.getByteArray("0000");
     }
 
     @Override
-    public void dim(int value) {
+    public byte[] dim(int value) {
         System.out.println("---Huati dim---");
+        return Utilty.getByteArray("0000");
     }
 }

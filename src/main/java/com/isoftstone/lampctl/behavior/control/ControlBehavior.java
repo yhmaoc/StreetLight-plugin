@@ -9,7 +9,7 @@ package com.isoftstone.lampctl.behavior.control;
  * @Author: softbaddog@sina.com
  */
 public interface ControlBehavior {
-    void on();
-    void off();
-    void dim(int value);
+    byte[] on();
+    byte[] off();
+    byte[] dim(int value);
 }

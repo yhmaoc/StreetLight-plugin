@@ -1,10 +1,7 @@
 package com.isoftstone.codec;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.isoftstone.type.DeviceType;
-import com.isoftstone.type.Manufacture;
 import com.isoftstone.utility.Utilty;
 import com.isoftstone.lampctl.HuatiLampCtl;
 import com.isoftstone.lampctl.LampCtl;

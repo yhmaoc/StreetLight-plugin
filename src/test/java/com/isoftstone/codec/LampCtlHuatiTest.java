@@ -1,5 +1,8 @@
 package com.isoftstone.codec;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.huawei.m2m.cig.tup.modules.protocol_adapter.IProtocolAdapter;
 import com.isoftstone.lampctl.streetlight.ProtocolAdapterImpl;
@@ -82,5 +85,40 @@ public class LampCtlHuatiTest {
         ObjectNode objectNode = protocolAdapter.decode(deviceRspByte);
         String str = objectNode.toString();
         System.out.println(str);
+    }
+
+    @Test
+    public void testLampCtlSwitchOn() throws Exception {
+        String data = "{\n" +
+                "\t\"msgType\":\"cloudReq\",\n" +
+                "\t\"hasMore\":0,\n" +
+                "\t\"serviceId\": \"Control\",\n" +
+                "\t\"method\": \"SET_SWITCH\",\n" +
+                "\t\"paras\": {\n" +
+                "\t\t\"cmd\": \"open\",\n" +
+                "\t\t\"value\": 100\n" +
+                "\t}\n" +
+                "}";
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode input = (ObjectNode) mapper.readTree(data);
+        System.out.println(input);
+        byte[] bytes = protocolAdapter.encode(input);
+        System.out.println(parseByte2HexStr(bytes));
+    }
+
+    @Test
+    public void testLampCtlDim() throws Exception {
+        String data = "{\n" +
+                "\t\"serviceId\": \"Control\",\n" +
+                "\t\"method\": \"SET_DIMMING\",\n" +
+                "\t\"paras\": {\n" +
+                "\t\t\"value\": 60\n" +
+                "\t}\n" +
+                "}";
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode input = (ObjectNode) mapper.readTree(data);
+        System.out.println(input);
+        byte[] bytes = protocolAdapter.encode(input);
+        System.out.println(parseByte2HexStr(bytes));
     }
 }

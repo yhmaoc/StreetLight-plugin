@@ -2,6 +2,8 @@ package com.isoftstone.codec;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.isoftstone.lampctl.HuatiLampCtl;
+import com.isoftstone.lampctl.LampCtl;
 import org.msgpack.core.MessageBufferPacker;
 import org.msgpack.core.MessagePack;
 
@@ -18,10 +20,6 @@ import java.util.EnumSet;
  */
 public class HuatiCloudToMachine extends AbsCloudToMachine {
 
-    protected String cmd = "SET_SWITCH_STATE";
-    protected int hasMore = 0;
-    protected int errcode = 0;
-    protected short mid = 0;
     protected JsonNode paras;
 
     private static HuatiCloudToMachine instance = null;
@@ -36,35 +34,34 @@ public class HuatiCloudToMachine extends AbsCloudToMachine {
 
     @Override
     public byte[] cmd() {
-
-        this.mid = (short)input.get("mid").asInt();
-        this.cmd = input.get("cmd").asText();
-        this.paras = input.get("paras");
-        if (this.cmd.equals("SET_SWITCH_STATE")) {
-            int status = paras.get("value").asInt();
-            MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
-            try {
-                packer
-                        .packByte((byte) status)
-                        .packByte((byte) errcode)
-                        .packShort(mid);
-                packer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return packer.toByteArray();
+        LampCtl lampCtl = HuatiLampCtl.getInstance();
+        String method = input.get("method").asText();
+        JsonNode paras = input.get("paras");
+        switch (method) {
+            case "SET_SWITCH":
+                if ("open".equals(paras.get("cmd").asText())) {
+                    return lampCtl.on();
+                } else if ("close".equals(paras.get("cmd").asText())) {
+                    return lampCtl.off();
+                }
+                break;
+            case "SET_DIMMING":
+                return lampCtl.dim(paras.get("value").asInt());
+            default:
+                break;
         }
         return null;
     }
 
     @Override
     public byte[] ack() {
-        this.errcode = input.get("errcode").asInt();
+        int hasMore = 0;
+        int errcode = input.get("errcode").asInt();
         byte[] ack = new byte[4];
         ack[0] = (byte) 0xAA;
         ack[1] = (byte) 0xAA;
-        ack[2] = (byte) this.errcode;
-        ack[3] = (byte) this.hasMore;
+        ack[2] = (byte) errcode;
+        ack[3] = (byte) hasMore;
         return ack;
     }
 }
