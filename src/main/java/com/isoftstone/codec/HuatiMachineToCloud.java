@@ -2,6 +2,7 @@ package com.isoftstone.codec;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.isoftstone.lampctl.constant.HuatiConstant;
 import com.isoftstone.utility.Utilty;
 import com.isoftstone.lampctl.HuatiLampCtl;
 import com.isoftstone.lampctl.LampCtl;
@@ -73,8 +74,19 @@ public class HuatiMachineToCloud extends AbsMachineToCloud {
         String[] dataArray = Utilty.handleString(dataStr).trim().split(" ");
         lampCtl.display();
 
-
-        data = lampCtl.report(dataArray);
+        //华体上报报文解析
+        switch (dataArray[6]){
+            case HuatiConstant.ENERGY_REPORT_CMD:
+                //电能参数、信号强度上报
+                data = lampCtl.report(dataArray);
+                break;
+            case "FF":
+                //透传上报
+                data = lampCtl.passthroughReport(dataStr);
+                break;
+            default:
+                data = null;
+        }
         return data;
     }
 

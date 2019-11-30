@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.huawei.m2m.cig.tup.modules.protocol_adapter.IProtocolAdapter;
 import com.isoftstone.lampctl.streetlight.ProtocolAdapterImpl;
+import com.isoftstone.utility.DateUtil;
 import com.isoftstone.utility.Utilty;
+import java.util.Date;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,6 +62,7 @@ public class LampCtlHuatiTest {
     public void testLampCtlEnergyReport() throws Exception {
         String data = "AA72000000420101F3000008D70000000000000000000000000000000000000000000000000000000" +
                 "11D54000000000000000000096E8100000000000000000000000F00000000B2";
+        //String data = "AA7200000042FF01F30";
         byte[] deviceReqByte = Utilty.getByteArray(data);
         System.out.println(parseByte2HexStr(deviceReqByte));
         ObjectNode objectNode = protocolAdapter.decode(deviceReqByte);
@@ -93,7 +96,8 @@ public class LampCtlHuatiTest {
                 "\t\"msgType\":\"cloudReq\",\n" +
                 "\t\"hasMore\":0,\n" +
                 "\t\"serviceId\": \"Control\",\n" +
-                "\t\"method\": \"SET_SWITCH\",\n" +
+                "\t\"mid\":30,\n" +
+                "\t\"cmd\": \"SET_SWITCH\",\n" +
                 "\t\"paras\": {\n" +
                 "\t\t\"cmd\": \"open\",\n" +
                 "\t\t\"value\": 100\n" +
@@ -108,9 +112,12 @@ public class LampCtlHuatiTest {
 
     @Test
     public void testLampCtlDim() throws Exception {
+        System.out.println(DateUtil.formatDateAndTime(new Date()));
         String data = "{\n" +
+                "\t\"msgType\":\"cloudReq\",\n" +
                 "\t\"serviceId\": \"Control\",\n" +
-                "\t\"method\": \"SET_DIMMING\",\n" +
+                "\t\"mid\":30,\n" +
+                "\t\"cmd\": \"SET_DIMMING\",\n" +
                 "\t\"paras\": {\n" +
                 "\t\t\"value\": 60\n" +
                 "\t}\n" +

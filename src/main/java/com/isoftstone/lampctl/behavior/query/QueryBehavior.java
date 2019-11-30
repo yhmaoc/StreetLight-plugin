@@ -9,6 +9,13 @@ package com.isoftstone.lampctl.behavior.query;
  * @Author: softbaddog@sina.com
  */
 public interface QueryBehavior {
-    void getStatus();
-    void getPower();
+    /**
+     * 获取NB设备状态（开关状态）
+     */
+    byte[] getStatus();
+
+    /**
+     * 获取电能参数
+     */
+    byte[] getEnergy();
 }

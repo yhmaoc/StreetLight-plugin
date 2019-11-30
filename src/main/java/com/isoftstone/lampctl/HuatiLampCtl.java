@@ -1,7 +1,8 @@
 package com.isoftstone.lampctl;
 
-import com.isoftstone.lampctl.behavior.ack.NormalAck;
+import com.isoftstone.lampctl.behavior.ack.HuatiAck;
 import com.isoftstone.lampctl.behavior.control.HuatiControl;
+import com.isoftstone.lampctl.behavior.passthrough.HuatiPassthrough;
 import com.isoftstone.lampctl.behavior.query.HuatiQuery;
 import com.isoftstone.lampctl.behavior.report.HuatiReport;
 import com.isoftstone.lampctl.behavior.task.NoTask;
@@ -23,7 +24,8 @@ public class HuatiLampCtl extends LampCtl {
         queryBehavior = new HuatiQuery();
         taskBehavior = new NoTask();
         reportBehavior = new HuatiReport();
-        ackBehavior = new NormalAck();
+        ackBehavior = new HuatiAck();
+        passthroughBehavior = new HuatiPassthrough();
     }
 
     public static HuatiLampCtl getInstance() {

@@ -1,6 +1,8 @@
 package com.isoftstone.lampctl;
 
 import com.isoftstone.lampctl.behavior.control.IotcommControl;
+import com.isoftstone.lampctl.behavior.passthrough.IotcommPassthrough;
+import com.isoftstone.lampctl.behavior.passthrough.PassthroughBehavior;
 import com.isoftstone.lampctl.behavior.query.IotcommQuery;
 import com.isoftstone.lampctl.behavior.task.IotcommTask;
 
@@ -20,6 +22,7 @@ public class IotcommLampCtl extends LampCtl {
         controlBehavior = new IotcommControl();
         queryBehavior = new IotcommQuery();
         taskBehavior = new IotcommTask();
+        passthroughBehavior = new IotcommPassthrough();
     }
 
     public static IotcommLampCtl getInstance() {
