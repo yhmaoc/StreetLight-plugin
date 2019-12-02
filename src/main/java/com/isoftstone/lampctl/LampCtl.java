@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.isoftstone.lampctl.behavior.ack.AckBehavior;
 import com.isoftstone.lampctl.behavior.control.ControlBehavior;
+import com.isoftstone.lampctl.behavior.passthrough.PassthroughBehavior;
 import com.isoftstone.lampctl.behavior.query.QueryBehavior;
 import com.isoftstone.lampctl.behavior.report.ReportBehavior;
 import com.isoftstone.lampctl.behavior.task.TaskBehavior;
+import com.isoftstone.lampctl.params.ControlParam;
 
 /**
  * ClassName: Light
@@ -23,21 +25,41 @@ public abstract class LampCtl {
     TaskBehavior taskBehavior;
     ReportBehavior reportBehavior;
     AckBehavior ackBehavior;
+    PassthroughBehavior passthroughBehavior;
 
-    public byte[] on() {
-        return controlBehavior.on();
+    public byte[] passthrough(ControlParam param) {
+        return passthroughBehavior.send(param);
     }
 
-    public byte[] off() {
-        return controlBehavior.off();
+    /**
+     * 开灯操作
+     * @param param
+     * @return
+     */
+    public byte[] on(ControlParam param) {
+        return controlBehavior.on(param);
     }
 
-    public byte[] dim(int value) {
-        return controlBehavior.dim(value);
+    /**
+     * 关灯操作
+     * @param param
+     * @return
+     */
+    public byte[] off(ControlParam param) {
+        return controlBehavior.off(param);
     }
 
-    public void getStatus() {
-        queryBehavior.getStatus();
+    /**
+     * 调光操作
+     * @param param
+     * @return
+     */
+    public byte[] dim(ControlParam param) {
+        return controlBehavior.dim(param);
+    }
+
+    public byte[] getStatus() {
+        return queryBehavior.getStatus();
     }
 
     public void task() {
@@ -47,6 +69,8 @@ public abstract class LampCtl {
     public ObjectNode ack(String[] dataArray) { return ackBehavior.cmdRsp(dataArray); }
 
     public ArrayNode report(String[] dataArray) { return reportBehavior.report(dataArray); }
+
+    public ArrayNode passthroughReport(String dataArray) { return reportBehavior.passthroughReport(dataArray); }
 
     public abstract void display();
 

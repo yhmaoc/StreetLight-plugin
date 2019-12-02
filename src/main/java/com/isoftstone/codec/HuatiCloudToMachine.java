@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.isoftstone.lampctl.HuatiLampCtl;
 import com.isoftstone.lampctl.LampCtl;
-import org.msgpack.core.MessageBufferPacker;
-import org.msgpack.core.MessagePack;
-
-import java.io.IOException;
-import java.util.EnumSet;
+import com.isoftstone.lampctl.constant.HuatiConstant;
+import com.isoftstone.lampctl.params.ControlParam;
+import com.isoftstone.utility.Utilty;
 
 /**
  * ClassName: HuatiCloudToMachine
@@ -20,48 +18,59 @@ import java.util.EnumSet;
  */
 public class HuatiCloudToMachine extends AbsCloudToMachine {
 
-    protected JsonNode paras;
-
     private static HuatiCloudToMachine instance = null;
 
     public static HuatiCloudToMachine getInstance(ObjectNode input) {
         if (instance == null) {
             instance = new HuatiCloudToMachine();
         }
+
         instance.setInput(input);
+
+        //解析OC下发的参数
+        instance.setEncodeParam(input);
         return instance;
     }
 
     @Override
     public byte[] cmd() {
         LampCtl lampCtl = HuatiLampCtl.getInstance();
-        String method = input.get("method").asText();
-        JsonNode paras = input.get("paras");
-        switch (method) {
+        JsonNode paras = encodeParam.getParas();
+
+        //封装下发参数
+        ControlParam param = getSendParam();
+        switch (encodeParam.getCmd()) {
+            case "CHECK_TIME":
+                return null;
             case "SET_SWITCH":
                 if ("open".equals(paras.get("cmd").asText())) {
-                    return lampCtl.on();
+                    return lampCtl.on(param);
                 } else if ("close".equals(paras.get("cmd").asText())) {
-                    return lampCtl.off();
+                    return lampCtl.off(param);
                 }
                 break;
             case "SET_DIMMING":
-                return lampCtl.dim(paras.get("value").asInt());
+                return lampCtl.dim(param);
+            case "GET_SWITCH_STATUS":
+                return lampCtl.getStatus();
+            case "GET_ENERGY":
+                return null;
+            case "SEND_CMD"://透传
+                return lampCtl.passthrough(param);
             default:
-                break;
         }
         return null;
     }
 
+    /**
+     * OC收到华体NB设备上报数据后，响应设备
+     * @return
+     */
     @Override
     public byte[] ack() {
-        int hasMore = 0;
-        int errcode = input.get("errcode").asInt();
-        byte[] ack = new byte[4];
-        ack[0] = (byte) 0xAA;
-        ack[1] = (byte) 0xAA;
-        ack[2] = (byte) errcode;
-        ack[3] = (byte) hasMore;
-        return ack;
+        if(0 == encodeParam.getErrcode()){
+            return Utilty.getByteArray(HuatiConstant.REPORT_RESP);
+        }
+        return null;
     }
 }

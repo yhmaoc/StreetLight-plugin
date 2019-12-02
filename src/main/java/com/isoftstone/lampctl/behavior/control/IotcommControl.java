@@ -1,5 +1,6 @@
 package com.isoftstone.lampctl.behavior.control;
 
+import com.isoftstone.lampctl.params.ControlParam;
 import com.isoftstone.utility.Utilty;
 
 /**
@@ -12,19 +13,19 @@ import com.isoftstone.utility.Utilty;
  */
 public class IotcommControl implements ControlBehavior {
     @Override
-    public byte[] on() {
+    public byte[] on(ControlParam param) {
         System.out.println("---IOTCOMM on---");
         return Utilty.getByteArray("0000");
     }
 
     @Override
-    public byte[] off() {
+    public byte[] off(ControlParam param) {
         System.out.println("---IOTCOMM off---");
         return Utilty.getByteArray("0000");
     }
 
     @Override
-    public byte[] dim(int value) {
+    public byte[] dim(ControlParam param) {
         System.out.println("---IOTCOMM dim---");
         return Utilty.getByteArray("0000");
     }

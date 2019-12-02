@@ -1,8 +1,10 @@
-package com.isoftstone.lampctl.behavior.control;
+package com.isoftstone.lampctl.behavior.passthrough;
+
 
 import com.isoftstone.lampctl.params.ControlParam;
 
 /**
+ * 透传
  * ClassName: OnBehavior
  * Package: com.isoftstone.lampctl.on
  * Description:
@@ -10,8 +12,7 @@ import com.isoftstone.lampctl.params.ControlParam;
  * @Date: 2019/11/26 12:25
  * @Author: softbaddog@sina.com
  */
-public interface ControlBehavior {
-    byte[] on(ControlParam param);
-    byte[] off(ControlParam param);
-    byte[] dim(ControlParam param);
+public interface PassthroughBehavior {
+
+    byte[] send(ControlParam param);
 }

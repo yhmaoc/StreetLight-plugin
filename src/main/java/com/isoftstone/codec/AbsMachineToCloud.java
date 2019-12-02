@@ -32,6 +32,7 @@ public abstract class AbsMachineToCloud {
     }
 
     public ObjectNode handle() {
+        //获取消息类型（设备响应、设备数据上报）
         String msgType = chop();
 
         root.put("msgType", msgType);

@@ -10,12 +10,14 @@ package com.isoftstone.lampctl.behavior.query;
  */
 public class IotcommQuery implements QueryBehavior {
     @Override
-    public void getStatus() {
+    public byte[] getStatus() {
         System.out.println("--IOTCOMM getStatus---");
+        return null;
     }
 
     @Override
-    public void getPower() {
-        System.out.println("--IOTCOMM getPower---");
+    public byte[] getEnergy() {
+        System.out.println("--IOTCOMM getEnergy---");
+        return null;
     }
 }

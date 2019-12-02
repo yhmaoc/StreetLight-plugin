@@ -10,12 +10,14 @@ package com.isoftstone.lampctl.behavior.query;
  */
 public class HuatiQuery implements QueryBehavior {
     @Override
-    public void getStatus() {
+    public byte[] getStatus() {
         System.out.println("--Huati getStatus---");
+        return null;
     }
 
     @Override
-    public void getPower() {
+    public byte[] getEnergy() {
         System.out.println("--Huati getPower---");
+        return null;
     }
 }

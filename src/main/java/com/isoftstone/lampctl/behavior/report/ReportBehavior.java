@@ -13,4 +13,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public interface ReportBehavior {
     ArrayNode report(String[] dataArray);
+
+    ArrayNode passthroughReport(String data);
 }
